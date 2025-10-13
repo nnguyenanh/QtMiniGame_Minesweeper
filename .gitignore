@@ -1,0 +1,22 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.vc.db
+*.VC.opendb
+*.ipch
+
+# Build
+x64/
+Debug/
+Release/
+build/
+*.obj
+*.pdb
+*.pch
+*.exe
+*.dll
+
+# Qt
+*.qmake.stash
+*.pro.user

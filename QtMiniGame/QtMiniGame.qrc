@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/QtMiniGame">
+        <file>icon_1_red_flag.ico</file>
+        <file>icon_2_question_mark.ico</file>
+    </qresource>
+</RCC>
