@@ -83,7 +83,7 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 
 void QtMiniGame::initGame(int bombCount)
 {
-
+    // initialize buttons attributes
     // clear old properties
     for (int r = 0; r < m_rows; ++r)
         for (int c = 0; c < m_cols; ++c)
@@ -100,6 +100,7 @@ void QtMiniGame::initGame(int bombCount)
     setGameIconSize();
 
     m_label_win_lose->setText("CLICK TO START");
+    m_label_win_lose->setText("PLAY");
 }
 
 
