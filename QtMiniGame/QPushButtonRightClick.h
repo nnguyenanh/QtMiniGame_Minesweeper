@@ -14,6 +14,6 @@ private slots:
 	void mousePressEvent(QMouseEvent* e) override;
 
 signals:
-	void clickRight();
+	void clickedRight();
 
 };

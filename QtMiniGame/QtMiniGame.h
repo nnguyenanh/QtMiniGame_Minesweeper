@@ -39,12 +39,40 @@ private:
     
     QGridLayout* m_grid_layout = nullptr; // manage row col
     
-    int m_button_level = 100;
-    QVector<QPushButtonRightClick*> m_buttons; // for buttons
+    int m_button_level = 100; // for level
+    int m_rows = 10;
+    int m_cols = 10;
+    int m_bomb_count = 15;
+    QVector<QPair<int, int>> m_bombs_coords;
+    //QVector<QPushButtonRightClick*> m_buttons; // for buttons
 
+    QVector<QVector<QPushButtonRightClick*>> m_buttons_grid; // for buttons
+
+    int m_icon_wid_number = 0;
+    int m_icon_wid = 0;
 
 public:
     void setCentralWidgetandGridLayout();
     void setButtonGridLayout();
+    void setGameIconSize();
+    void initGame(int bombCount);
+
+    void setGridButtonsProperty(int BombsCount);
+    int countAdjacentBombs(int row, int col);
+    QString chooseHiddenIconNumber(int number);
+    //void setClickedButtonIcon(int row, int col, int wid);
+
+    void generateRandomBombs(int BombsCount);
+    bool isBomb(int row, int col);
+
+    
+    void expandClickedBreadthFirstSearch(QQueue<QPair<int, int>>& blank_coords);
+
+
+//private slots:
+private slots:
+    void onLeftClickGrid(int row, int col);
+    void onRightClickGrid(int row, int col);
+
 };
 
