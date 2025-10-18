@@ -22,22 +22,31 @@ private:
 
 // USER DEFINE MEMBER VARIABLES AND MEMBER FUNCTION
 private:
-    QWidget* m_central = nullptr; // container
+    QWidget* m_central = nullptr; // 
+
+    QSplitter* m_split_screen = nullptr;
     QVBoxLayout* m_wrapper_align = nullptr;
 
     // layouts for alignment
     QVBoxLayout* m_layout_v = nullptr;
-    QHBoxLayout* m_layout_h = nullptr;
+    QHBoxLayout* m_layout_main = nullptr;
+    QGridLayout* m_layout_grid = nullptr; // manage row col
+    QGridLayout* m_grid_layout = nullptr; // manage row col
+
 
     // function buttons
     QLabel* m_label_win_lose = nullptr;
     QLabel* m_label_score = nullptr;
+
+    QPushButton* m_btn_easy = nullptr;
+    QPushButton* m_btn_medium = nullptr;
+    QPushButton* m_btn_hard = nullptr;
+    QPushButton* m_btn_custom = nullptr;
+
     QPushButton* m_btn_new = nullptr;
-    QPushButton* m_btn_restart = nullptr;
-    QPushButton* m_btn_back = nullptr;
+    QPushButton* m_btn_logout = nullptr;
     
     
-    QGridLayout* m_grid_layout = nullptr; // manage row col
     
     int m_button_level = 100; // for level
     int m_rows = 10;
