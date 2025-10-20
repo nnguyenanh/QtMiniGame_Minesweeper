@@ -5,23 +5,6 @@
 QPushButtonRightClick::QPushButtonRightClick(QWidget* parent) :
 	QPushButton(parent)
 {
-	setStyleSheet(
-		"QPushButtonRightClick {"
-		"  background-color: #696969;"
-		"  border: 0.5px solid #222;"
-		"  border-radius: 0px;"
-		"}"
-		"QPushButton:hover {"
-		"  background-color: #3e3e3e;"
-		"}"
-		"QPushButton:pressed {"
-		"  background-color: #222;"
-		"}"
-		"QPushButtonRightClick:disabled {"
-		"  background-color: #a0a0a0;"   // lighter when disabled
-		"  color: #ddd;"
-		"}"
-	);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
@@ -75,4 +58,7 @@ void QPushButtonRightClick::mousePressEvent(QMouseEvent* e)
 		QPushButton::mousePressEvent(e);
 }
 
-
+void QPushButtonRightClick::mouseDoubleClickEvent(QMouseEvent* e)
+{
+	return;
+}

@@ -5,8 +5,12 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtMiniGame.h"
 #include "QPushButtonRightClick.h"
+//#include "QPushButtonStyled.h"
+//#include "QLabelStyled.h"
+#include "DialogLevel.h"
 
-#include <cmath>   // for std::sqrt
+
+//#include <cmath>   // for std::sqrt
 
 
 class QtMiniGame : public QMainWindow
@@ -36,22 +40,19 @@ private:
 
     // function buttons
     QLabel* m_label_win_lose = nullptr;
-    QLabel* m_label_score = nullptr;
+    QLabel* m_label_bombcount = nullptr;
 
-    QPushButton* m_btn_easy = nullptr;
-    QPushButton* m_btn_medium = nullptr;
-    QPushButton* m_btn_hard = nullptr;
-    QPushButton* m_btn_custom = nullptr;
+    QPushButton* m_btn_level = nullptr;
+    QPushButton* m_btn_restart = nullptr;
 
-    QPushButton* m_btn_new = nullptr;
     QPushButton* m_btn_logout = nullptr;
     
     
     
     int m_button_level = 100; // for level
-    int m_rows = 10;
-    int m_cols = 10;
-    int m_bomb_count = 15;
+    int m_rows = 25;
+    int m_cols = 25;
+    int m_bomb_count = 120;
     QVector<QPair<int, int>> m_bombs_coords;
     //QVector<QPushButtonRightClick*> m_buttons; // for buttons
 
@@ -64,7 +65,6 @@ public:
     void setCentralWidgetandGridLayout();
     void setButtonGridLayout();
     void setGameIconSize();
-    void initGame(int bombCount);
 
     void setGridButtonsProperty(int BombsCount);
     int countAdjacentBombs(int row, int col);
@@ -82,6 +82,7 @@ public:
 private slots:
     void onLeftClickGrid(int row, int col);
     void onRightClickGrid(int row, int col);
+    void initGame();
 
 };
 

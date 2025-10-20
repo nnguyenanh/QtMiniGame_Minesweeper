@@ -10,8 +10,9 @@ class QPushButtonRightClick : public QPushButton
 public:
 	explicit QPushButtonRightClick(QWidget* parent = nullptr);
 
-private slots:
+protected:
 	void mousePressEvent(QMouseEvent* e) override;
+	void mouseDoubleClickEvent(QMouseEvent* e);
 
 signals:
 	void clickedRight();

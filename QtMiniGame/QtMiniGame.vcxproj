@@ -108,12 +108,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="QtMiniGame.qrc" />
+    <QtUic Include="DialogLevel.ui" />
     <QtUic Include="QtMiniGame.ui" />
     <QtMoc Include="QtMiniGame.h" />
+    <ClCompile Include="DialogLevel.cpp" />
+    <ClCompile Include="QLabelStyled.cpp" />
     <ClCompile Include="QPushButtonRightClick.cpp" />
+    <QtMoc Include="QPushButtonStyled.h" />
+    <ClCompile Include="QPushButtonStyled.cpp" />
     <ClCompile Include="QtMiniGame.cpp" />
     <ClCompile Include="main.cpp" />
     <QtMoc Include="QPushButtonRightClick.h" />
+    <QtMoc Include="QLabelStyled.h" />
+    <QtMoc Include="DialogLevel.h" />
     <ClInclude Include="stdafx.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">Create</PrecompiledHeader>

@@ -49,10 +49,33 @@
     <ClCompile Include="QPushButtonRightClick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QLabelStyled.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QPushButtonStyled.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QPushButtonRightClick.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QPushButtonStyled.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QLabelStyled.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DialogLevel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="DialogLevel.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>
