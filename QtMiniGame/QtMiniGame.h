@@ -5,14 +5,9 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtMiniGame.h"
 #include "QPushButtonRightClick.h"
-//#include "QPushButtonStyled.h"
-//#include "QLabelStyled.h"
 #include "DialogLevel.h"
-//#include <QSoundEffect>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-//#include <QMultimedia/QSound>
-//#include <cmath>   // for std::sqrt
 
 
 class QtMiniGame : public QMainWindow

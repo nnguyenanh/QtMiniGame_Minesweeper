@@ -413,7 +413,6 @@ void QtMiniGame::setButtonGridLayout()
 	}
 }
 
-
 void QtMiniGame::onLeftClickGrid(int row, int col)
 {
 	if (!m_buttons_grid[row][col]) return;
@@ -488,7 +487,6 @@ void QtMiniGame::onLeftClickGrid(int row, int col)
 		disableAllGrid(true);
 	}
 }
-
 
 void QtMiniGame::onRightClickGrid(int row, int col)
 {
@@ -776,9 +774,6 @@ void QtMiniGame::recreateGridWithProgress(QProgressDialog* progress)
 
 	// progress dialog closes in caller; we start reveal afterward
 }
-
-
-
 
 QtMiniGame::~QtMiniGame()
 {
