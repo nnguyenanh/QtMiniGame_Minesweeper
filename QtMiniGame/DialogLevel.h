@@ -1,5 +1,6 @@
 #pragma once
 #include <QDialog>
+#include <QMessageBox>
 #include "QPushButtonStyled.h"
 
 namespace Ui {
@@ -23,4 +24,13 @@ private:
 
     QLineEdit* m_edit_size = nullptr;
     QLineEdit* m_edit_bombcount = nullptr;
+
+protected:
+    void accept() override;
+
+public:
+    int setSize() const;
+    int setBombCount() const;
+    int setGridSize() const;
+
 };

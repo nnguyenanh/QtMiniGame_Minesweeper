@@ -7,10 +7,12 @@ DialogLevel::DialogLevel(QWidget* parent)
     ui(new Ui::DialogLevel)
 {
     ui->setupUi(this);
-    QFont font("Courier New", 11, QFont::Bold);
-    setFont(font);
-    setWindowTitle("Select Level");
-    setFixedSize(320, 280);
+    setWindowIcon(QIcon(":/QtMiniGame/icons/icon_8_level.ico"));
+    setFont(QFont("Courier New", 11, QFont::Bold));
+    setWindowTitle("Level");
+    setFixedSize(320, 350);
+
+    //connect(ui->okButton, &QPushButton::clicked, this, &DialogLevel::accept);
 
     // Style Apply
     ui->okButton->setFixedSize(100, 30);
@@ -21,10 +23,10 @@ DialogLevel::DialogLevel(QWidget* parent)
     QLabel* title = new QLabel("Choose difficulty:");
 
     // RADIO BUTTONS
-    m_easy   = new QRadioButton("[ EASY ]   (05|06)");
-    m_medium = new QRadioButton("[MEDIUM]   (10|15)");
-    m_hard   = new QRadioButton("[ HARD ]   (15|28)");
-    m_custom = new QRadioButton("[CUSTOM] maximum (30|899)");
+    m_easy   = new QRadioButton("[ EASY ]   (10|15)");
+    m_medium = new QRadioButton("[MEDIUM]   (15|40)");
+    m_hard   = new QRadioButton("[ HARD ]   (20|80)");
+    m_custom = new QRadioButton("[CUSTOM]   (??|??)");
 
     // GROUP
     m_group = new QButtonGroup(this);
@@ -32,7 +34,7 @@ DialogLevel::DialogLevel(QWidget* parent)
     m_group->addButton(m_medium);
     m_group->addButton(m_hard);
     m_group->addButton(m_custom);
-    m_medium->setChecked(true);
+    m_easy->setChecked(true);
 
     // EDIT 
     m_edit_size = new QLineEdit();
@@ -53,9 +55,12 @@ DialogLevel::DialogLevel(QWidget* parent)
     layout_emh->addWidget(m_hard);
 
     QVBoxLayout* layout_cus = new QVBoxLayout();
-    layout_cus->setAlignment(Qt::AlignCenter | Qt::AlignTop);
-    layout_cus->setContentsMargins(0, 20, 0, 0);
-    layout_cus->addWidget(m_custom);
+    QVBoxLayout* layout_c = new QVBoxLayout();
+    layout_c->setAlignment(Qt::AlignCenter | Qt::AlignTop);
+    layout_c->setContentsMargins(0, 20, 0, 0);
+    layout_c->addWidget(m_custom);
+
+    layout_cus->addLayout(layout_c);
 
 
     QLabel* label_enter = new QLabel("Enter:");
@@ -67,8 +72,18 @@ DialogLevel::DialogLevel(QWidget* parent)
     layout_edit->addWidget(m_edit_bombcount);
     layout_edit->addStretch();
 
+    QLabel* label_note = new QLabel("\NOTE:\n- Maximum (35|1224)\n- Minimum (05|24)\n- (total cells) > (mine) > 0.");
+    label_note->setFont(QFont("Courier New", 11, QFont::Normal, true));
+    QHBoxLayout* layout_note = new QHBoxLayout();
+    label_note->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    layout_note->addStretch();
+    layout_note->addWidget(label_note);
+    layout_note->addStretch();
+
 
     layout_cus->addLayout(layout_edit);
+    layout_cus->addSpacing(10);
+    layout_cus->addLayout(layout_note);
 
     QHBoxLayout* layout_cus_center = new QHBoxLayout();
     layout_cus_center->addStretch();
@@ -87,6 +102,88 @@ DialogLevel::DialogLevel(QWidget* parent)
     layout_main->addLayout(layout_button);
 
     setLayout(layout_main);
+
+    // Initially disable text boxes
+    m_edit_size->setEnabled(false);
+    m_edit_bombcount->setEnabled(false);
+
+    // When CUSTOM is selected, enable inputs
+    connect(m_custom, &QRadioButton::toggled, this, [=]() {
+        m_edit_size->setEnabled(true);
+        m_edit_bombcount->setEnabled(true);
+        });
+
+    // When other radio buttons are selected, disable inputs
+    connect(m_easy, &QRadioButton::toggled, this, [=]() {
+        m_edit_size->setEnabled(false);
+        m_edit_bombcount->setEnabled(false);
+        });
+    connect(m_medium, &QRadioButton::toggled, this, [=]() {
+        m_edit_size->setEnabled(false);
+        m_edit_bombcount->setEnabled(false);
+        });
+    connect(m_hard, &QRadioButton::toggled, this, [=]() {
+        m_edit_size->setEnabled(false);
+        m_edit_bombcount->setEnabled(false);
+        });
+}
+
+
+int DialogLevel::setSize() const {
+    if (m_easy->isChecked()) return 10;
+    if (m_medium->isChecked()) return 15;
+    if (m_hard->isChecked()) return 20;
+    if (m_custom->isChecked())
+        return m_edit_size->text().toInt();
+    return 10;
+}
+
+int DialogLevel::setBombCount() const {
+    if (m_easy->isChecked()) return 15;
+    if (m_medium->isChecked()) return 40;
+    if (m_hard->isChecked()) return 80;
+    if (m_custom->isChecked())
+        return m_edit_bombcount->text().toInt();
+    return 15;
+}
+
+int DialogLevel::setGridSize() const {
+    if (m_easy->isChecked()) return 550;
+    if (m_medium->isChecked()) return 600;
+    if (m_hard->isChecked()) return 650;
+    if (m_custom->isChecked())
+    {
+        int n = m_edit_size->text().toInt();
+        if (n < 15) return 550;
+        else if (n < 25) return 600;
+        else return 650;
+    }
+    return 550;
+}
+
+void DialogLevel::accept()
+{
+    if (m_custom->isChecked()) {
+        bool check_size, check_mine;
+        int size = m_edit_size->text().toInt(&check_size);
+        int bombs = m_edit_bombcount->text().toInt(&check_mine);
+
+        QStringList errors;
+
+        if (!check_size || !check_mine)
+            errors << "Inputs must be integers.";
+        if (check_size && (size < 5 || size > 35))
+            errors << "Size must be between 5 and 35.";
+        if (check_mine && (bombs < 1 || bombs >= size * size))
+            errors << "Mines must be:\n- At least 1.\n- Less than total cells.";
+
+        if (!errors.isEmpty()) {
+            QMessageBox::critical(this, "ERROR", errors.join("\n"));
+            return;
+        }
+    }
+
+    QDialog::accept();
 }
 
 DialogLevel::~DialogLevel()

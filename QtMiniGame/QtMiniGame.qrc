@@ -1,9 +1,14 @@
 <RCC>
     <qresource prefix="/QtMiniGame">
-        <file>icons/icon_1_red_flag.ico</file>
-        <file>icons/icon_2_question_mark.ico</file>
+		<file>icons/icon_1_red_flag.ico</file>
+		<file>icons/icon_2_question_mark.ico</file>
         <file>icons/icon_3_mine.ico</file>
-        <file>icons/icon_4_blasting.ico</file>
+		<file>icons/icon_4_blasting.ico</file>
+		<file>icons/icon_5_pause.ico</file>
+		<file>icons/icon_6_play.ico</file>
+		<file>icons/icon_7_sound.ico</file>
+		<file>icons/icon_8_level.ico</file>
+		<file>icons/icon_main_game.ico</file>
         <file>icons/number_1.ico</file>
         <file>icons/number_2.ico</file>
         <file>icons/number_3.ico</file>

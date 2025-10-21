@@ -28,11 +28,11 @@ private:
 private:
     QWidget* m_central = nullptr; // 
 
+    int m_grid_size = 550;
     QSplitter* m_split_screen = nullptr;
     QVBoxLayout* m_wrapper_align = nullptr;
 
     // layouts for alignment
-    QVBoxLayout* m_layout_v = nullptr;
     QHBoxLayout* m_layout_main = nullptr;
     QGridLayout* m_layout_grid = nullptr; // manage row col
     QGridLayout* m_grid_layout = nullptr; // manage row col
@@ -41,18 +41,21 @@ private:
     // function buttons
     QLabel* m_label_win_lose = nullptr;
     QLabel* m_label_bombcount = nullptr;
+    QTimer* m_timer;
+    QElapsedTimer m_elapsed;
+    QLabel* m_label_clock = nullptr;
 
+    QPushButton* m_btn_pause_resume = nullptr;
+    QPushButton* m_btn_sound = nullptr;
     QPushButton* m_btn_level = nullptr;
     QPushButton* m_btn_restart = nullptr;
-
     QPushButton* m_btn_logout = nullptr;
     
     
     
-    int m_button_level = 100; // for level
-    int m_rows = 25;
-    int m_cols = 25;
-    int m_bomb_count = 120;
+    int m_rows = 10;
+    int m_cols = 10;
+    int m_bomb_count = 15;
     QVector<QPair<int, int>> m_bombs_coords;
     //QVector<QPushButtonRightClick*> m_buttons; // for buttons
 
@@ -60,6 +63,24 @@ private:
 
     int m_icon_wid_number = 0;
     int m_icon_wid = 0;
+    int m_icon_pause_sound_wid = 25;
+    int m_number_revealed_btn = 0;
+    int m_count_revealed_btn = 0;
+    bool m_is_win = false;
+    bool m_is_playing = false;
+    qint64 m_paused_ms = 0;
+
+
+    // reveal sequence
+    QTimer* m_revealTimer = nullptr;
+    QVector<QPushButton*> m_revealList;
+    int m_revealIndex = 0;
+    int m_revealIntervalMs = 0; // tweak for speed
+
+
+protected:
+    //void showEvent(QShowEvent* e) override;
+
 
 public:
     void setCentralWidgetandGridLayout();
@@ -77,6 +98,11 @@ public:
     
     void expandClickedBreadthFirstSearch(QQueue<QPair<int, int>>& blank_coords);
 
+    void disableAllGrid(bool status=false);
+    void setFixGridButtonsSize();
+
+    void revealBomb(int row, int col);
+    void recreateGridWithProgress(QProgressDialog* progress);
 
 //private slots:
 private slots:
