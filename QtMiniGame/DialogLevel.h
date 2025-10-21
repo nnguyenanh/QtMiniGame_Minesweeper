@@ -25,6 +25,10 @@ private:
     QLineEdit* m_edit_size = nullptr;
     QLineEdit* m_edit_bombcount = nullptr;
 
+    bool* m_ptr_is_sound = nullptr;
+    std::function<void()> m_playClickSound;
+
+
 protected:
     void accept() override;
 
@@ -32,5 +36,7 @@ public:
     int setSize() const;
     int setBombCount() const;
     int setGridSize() const;
+    void setSoundControl(bool* soundFlag, std::function<void()> playClick);
+
 
 };

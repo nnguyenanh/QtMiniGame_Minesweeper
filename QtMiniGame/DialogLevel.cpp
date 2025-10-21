@@ -23,9 +23,9 @@ DialogLevel::DialogLevel(QWidget* parent)
     QLabel* title = new QLabel("Choose difficulty:");
 
     // RADIO BUTTONS
-    m_easy   = new QRadioButton("[ EASY ]   (10|15)");
-    m_medium = new QRadioButton("[MEDIUM]   (15|40)");
-    m_hard   = new QRadioButton("[ HARD ]   (20|80)");
+    m_easy   = new QRadioButton("[ EASY ]   (10|12)");
+    m_medium = new QRadioButton("[MEDIUM]   (16|40)");
+    m_hard   = new QRadioButton("[ HARD ]   (22|99)");
     m_custom = new QRadioButton("[CUSTOM]   (??|??)");
 
     // GROUP
@@ -126,22 +126,27 @@ DialogLevel::DialogLevel(QWidget* parent)
         m_edit_size->setEnabled(false);
         m_edit_bombcount->setEnabled(false);
         });
+    connect(ui->okButton, &QPushButton::pressed, this, [=]() {
+        if (m_ptr_is_sound && *m_ptr_is_sound && m_playClickSound)
+            m_playClickSound();
+        });
+
 }
 
 
 int DialogLevel::setSize() const {
     if (m_easy->isChecked()) return 10;
-    if (m_medium->isChecked()) return 15;
-    if (m_hard->isChecked()) return 20;
+    if (m_medium->isChecked()) return 16;
+    if (m_hard->isChecked()) return 22;
     if (m_custom->isChecked())
         return m_edit_size->text().toInt();
     return 10;
 }
 
 int DialogLevel::setBombCount() const {
-    if (m_easy->isChecked()) return 15;
+    if (m_easy->isChecked()) return 12;
     if (m_medium->isChecked()) return 40;
-    if (m_hard->isChecked()) return 80;
+    if (m_hard->isChecked()) return 99;
     if (m_custom->isChecked())
         return m_edit_bombcount->text().toInt();
     return 15;
@@ -185,6 +190,13 @@ void DialogLevel::accept()
 
     QDialog::accept();
 }
+
+void DialogLevel::setSoundControl(bool* soundFlag, std::function<void()> playClick)
+{
+    m_ptr_is_sound = soundFlag;
+    m_playClickSound = playClick;
+}
+
 
 DialogLevel::~DialogLevel()
 {

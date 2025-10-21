@@ -8,8 +8,10 @@
 //#include "QPushButtonStyled.h"
 //#include "QLabelStyled.h"
 #include "DialogLevel.h"
-
-
+//#include <QSoundEffect>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+//#include <QMultimedia/QSound>
 //#include <cmath>   // for std::sqrt
 
 
@@ -68,7 +70,9 @@ private:
     int m_count_revealed_btn = 0;
     bool m_is_win = false;
     bool m_is_playing = false;
-    qint64 m_paused_ms = 0;
+    bool m_is_sound = false;
+    qint64 m_paused_ms = 15;
+    QString m_str_time = "00:00";
 
 
     // reveal sequence
@@ -76,6 +80,45 @@ private:
     QVector<QPushButton*> m_revealList;
     int m_revealIndex = 0;
     int m_revealIntervalMs = 0; // tweak for speed
+
+
+    // QIcon 
+    QIcon m_icon_1_red_flag;
+    QIcon m_icon_2_question_mark;
+    QIcon m_icon_3_mine;
+    QIcon m_icon_4_blasting;
+    QIcon m_icon_5_pause;
+    QIcon m_icon_6_play;
+    QIcon m_icon_7_sound_off;
+    QIcon m_icon_7_sound_on;
+    QIcon m_icon_8_level;
+
+    QIcon m_icon_number_1;
+    QIcon m_icon_number_2;
+    QIcon m_icon_number_3;
+    QIcon m_icon_number_4;
+    QIcon m_icon_number_5;
+    QIcon m_icon_number_6;
+    QIcon m_icon_number_7;
+    QIcon m_icon_number_8;
+
+    // QSoundEffect
+    QMediaPlayer m_player_1_step;
+    QAudioOutput m_audio_1_step;
+
+    QMediaPlayer m_player_2_flag;
+    QAudioOutput m_audio_2_flag;
+
+    QMediaPlayer m_player_3_mine;
+    QAudioOutput m_audio_3_mine;
+
+    QMediaPlayer m_player_4_click;
+    QAudioOutput m_audio_4_click;
+
+    //QSound m_sound_step;
+    //QSound m_sound_flag;
+    //QSound m_sound_mine;
+    //QSound m_sound_click;
 
 
 protected:
@@ -89,7 +132,7 @@ public:
 
     void setGridButtonsProperty(int BombsCount);
     int countAdjacentBombs(int row, int col);
-    QString chooseHiddenIconNumber(int number);
+    QIcon chooseHiddenIconNumber(int number);
     //void setClickedButtonIcon(int row, int col, int wid);
 
     void generateRandomBombs(int BombsCount);

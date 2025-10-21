@@ -8,8 +8,48 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 	ui.setupUi(this);
 	QFont font("Courier New", 11, QFont::Bold);
 	setFont(font);
-	setWindowIcon(QIcon(":QtMiniGame/icons/icon_main_game.ico"));
-	setWindowTitle("Minesweeper - Vietnam");
+
+	// ICONS
+	m_icon_1_red_flag = QIcon(":/QtMiniGame/icons/icon_1_red_flag.ico");
+	m_icon_2_question_mark = QIcon(":/QtMiniGame/icons/icon_2_question_mark.ico");
+	m_icon_3_mine = QIcon(":/QtMiniGame/icons/icon_3_mine.ico");
+	m_icon_4_blasting = QIcon(":/QtMiniGame/icons/icon_4_blasting.ico");
+	m_icon_5_pause = QIcon(":/QtMiniGame/icons/icon_5_pause.ico");
+	m_icon_6_play = QIcon(":/QtMiniGame/icons/icon_6_play.ico");
+	m_icon_7_sound_off = QIcon(":/QtMiniGame/icons/icon_7_sound_off.ico");
+	m_icon_7_sound_on = QIcon(":/QtMiniGame/icons/icon_7_sound_on.ico");
+	m_icon_8_level = QIcon(":/QtMiniGame/icons/icon_8_level.ico");
+
+	m_icon_number_1 = QIcon(":/QtMiniGame/icons/number_1.ico");
+	m_icon_number_2 = QIcon(":/QtMiniGame/icons/number_2.ico");
+	m_icon_number_3 = QIcon(":/QtMiniGame/icons/number_3.ico");
+	m_icon_number_4 = QIcon(":/QtMiniGame/icons/number_4.ico");
+	m_icon_number_5 = QIcon(":/QtMiniGame/icons/number_5.ico");
+	m_icon_number_6 = QIcon(":/QtMiniGame/icons/number_6.ico");
+	m_icon_number_7 = QIcon(":/QtMiniGame/icons/number_7.ico");
+	m_icon_number_8 = QIcon(":/QtMiniGame/icons/number_8.ico");
+
+	setWindowIcon(m_icon_3_mine);
+	setWindowTitle("Minesweeper Vietnam");
+
+	// SOUNDS
+	m_player_1_step.setAudioOutput(&m_audio_1_step);
+	m_player_1_step.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_1_step.mp3"));
+	m_audio_1_step.setVolume(0.8);
+
+	m_player_2_flag.setAudioOutput(&m_audio_2_flag);
+	m_player_2_flag.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_2_flag.mp3"));
+	m_audio_2_flag.setVolume(0.8);
+
+	m_player_3_mine.setAudioOutput(&m_audio_3_mine);
+	m_player_3_mine.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_3_explode.mp3"));
+	m_audio_3_mine.setVolume(0.8);
+
+	m_player_4_click.setAudioOutput(&m_audio_4_click);
+	m_player_4_click.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_4_click.mp3"));
+	m_audio_4_click.setVolume(0.8);
+
+
 
 	// Set central widget and grid layout
 	setCentralWidgetandGridLayout();
@@ -19,6 +59,7 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 	setFixGridButtonsSize();
 	setGameIconSize();
 	initGame();
+
 }
 
 // SET WIDGET LAYOUT
@@ -43,12 +84,12 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 	// === BUTTONS ===
 	m_btn_pause_resume = new QPushButton(this);
 	m_btn_pause_resume->setFixedSize(50, 50);
-	m_btn_pause_resume->setIcon(QIcon(":/QtMiniGame/icons/icon_5_pause.ico"));
+	m_btn_pause_resume->setIcon(m_icon_5_pause);
 	m_btn_pause_resume->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
 	m_btn_pause_resume->setDisabled(true);
 	m_btn_sound = new QPushButton(this);
 	m_btn_sound->setFixedSize(50, 50);
-	m_btn_sound->setIcon(QIcon(":/QtMiniGame/icons/icon_7_sound.ico"));
+	m_btn_sound->setIcon(m_icon_7_sound_off);
 	m_btn_sound->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
 	m_btn_level = new QPushButton("Level", this);
 	m_btn_level->setFixedSize(110, 50);
@@ -59,9 +100,9 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 
 	// WIN screen 
 	m_label_win_lose = new QLabel(this);
-	m_label_win_lose->setFixedSize(110, 110);
+	m_label_win_lose->setFixedSize(110, 180);
 	m_label_win_lose->setAlignment(Qt::AlignCenter);
-	m_label_win_lose->setTextFormat(Qt::PlainText); 
+	m_label_win_lose->setTextFormat(Qt::PlainText);
 	m_label_win_lose->setWordWrap(true);
 	m_label_win_lose->setText("PLAY");  // default text
 	m_label_win_lose->setStyleSheet(
@@ -114,14 +155,15 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 
 
 	QVBoxLayout* layout_control_panel = new QVBoxLayout();
-	layout_control_panel->addStretch();
+	//layout_control_panel->addStretch();
+	layout_control_panel->addSpacing(20);
 	layout_control_panel->addWidget(m_label_win_lose, 0, Qt::AlignHCenter);
-	layout_control_panel->addSpacing(30);
+	layout_control_panel->addSpacing(20);
 	layout_control_panel->addWidget(m_label_bombcount, 0, Qt::AlignHCenter);
-	layout_control_panel->addSpacing(30);
+	layout_control_panel->addSpacing(20);
 	layout_control_panel->addWidget(m_label_clock, 0, Qt::AlignHCenter);
 	layout_control_panel->addLayout(layout_pause_sound);
-	layout_control_panel->addSpacing(30);
+	layout_control_panel->addSpacing(20);
 	layout_control_panel->addWidget(m_btn_level, 0, Qt::AlignHCenter);
 	layout_control_panel->addWidget(m_btn_restart, 0, Qt::AlignHCenter);
 	layout_control_panel->addStretch();
@@ -168,18 +210,20 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 		int total = (m_paused_ms + m_elapsed.elapsed()) / 1000;
 		int min = total / 60;
 		int sec = total % 60;
-		m_label_clock->setText(QString("%1:%2")
+		// Store formatted string
+		m_str_time = QString("%1:%2")
 			.arg(min, 2, 10, QChar('0'))
-			.arg(sec, 2, 10, QChar('0')));
+			.arg(sec, 2, 10, QChar('0'));
+		// Display
+		m_label_clock->setText(m_str_time);
 		});
 
-	static QIcon icon_pause(":/QtMiniGame/icons/icon_5_pause.ico");
-	static QIcon icon_play(":/QtMiniGame/icons/icon_6_play.ico");
+
 	connect(m_btn_pause_resume, &QPushButton::clicked, this, [=]() {
 		if (m_is_playing) {
 			m_timer->stop();
 			m_paused_ms += m_elapsed.elapsed();  // store elapsed before pause
-			m_btn_pause_resume->setIcon(icon_play);
+			m_btn_pause_resume->setIcon(m_icon_6_play);
 			m_is_playing = false;
 			disableAllGrid(true);
 		}
@@ -187,7 +231,7 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 			m_elapsed.restart();  // reset for resumed interval
 			m_timer->start(1000);
 			m_is_playing = true;
-			m_btn_pause_resume->setIcon(icon_pause);
+			m_btn_pause_resume->setIcon(m_icon_5_pause);
 			disableAllGrid(false);
 		}
 		});
@@ -207,22 +251,31 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 
 	connect(m_btn_level, &QPushButton::clicked, this, [=]() {
 		DialogLevel dlg(this);
+		dlg.setWindowIcon(m_icon_8_level);
+		// pass control
+		dlg.setSoundControl(&m_is_sound, [=]() {
+			m_player_4_click.stop();
+			m_player_4_click.play();
+			});
 		if (dlg.exec() == QDialog::Accepted) {
 			// get values from level dialog
 			m_rows = dlg.setSize();
-			m_cols = dlg.setSize();    
+			m_cols = dlg.setSize();
 			m_bomb_count = dlg.setBombCount();
 			m_grid_size = dlg.setGridSize();
-			
-			QProgressDialog loading("Creating new grid...", QString(), 0, 100, this);
-			loading.setWindowTitle("Please wait");
+
+
+			QProgressDialog loading("Loading...", QString(), 0, m_rows * m_cols * 2, this);
+			loading.setWindowTitle("Create Game Board");
 			loading.setWindowModality(Qt::ApplicationModal);
 			loading.setCancelButton(nullptr);
 			loading.setMinimumDuration(0);
-			loading.setAutoClose(true);
+			loading.setAutoClose(false);
+			loading.setAutoReset(false);
+			//loading.setMaximum(10000);
 			loading.setStyleSheet(
-				"QProgressDialog { background-color: #222; color: white; font: bold 12px 'Courier New'; }"
-				"QLabel { color: white; font: bold 14px 'Courier New'; }"
+				"QProgressDialog { background-color: #222; color: white; font: bold 11px 'Courier New'; }"
+				"QLabel { color: white; font: bold 15px 'Courier New'; }"
 				"QProgressBar {"
 				"  border: 1px solid #555;"
 				"  border-radius: 5px;"
@@ -231,7 +284,7 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 				"  background-color: #333;"
 				"}"
 				"QProgressBar::chunk {"
-				"  background-color: #00cc66;" 
+				"  background-color: #00cc66;"
 				"  width: 20px;"
 				"}"
 			);
@@ -241,7 +294,7 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 
 			recreateGridWithProgress(&loading);
 			initGame();
-
+			loading.setValue(loading.maximum() - 1);
 			loading.close();
 			m_revealIndex = 0;
 			m_revealTimer->start();
@@ -249,6 +302,42 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 		}
 		});
 	connect(m_btn_restart, &QPushButton::clicked, this, &QtMiniGame::initGame);
+	connect(m_btn_sound, &QPushButton::clicked, this, [=] {
+		if (m_is_sound)
+		{
+			m_is_sound = false;
+			m_btn_sound->setIcon(m_icon_7_sound_off);
+			m_btn_sound->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
+		}
+		else
+		{
+			m_is_sound = true;
+			m_btn_sound->setIcon(m_icon_7_sound_on);
+			m_btn_sound->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
+		}
+		});
+
+	// CLICK SOUND FOR NORMAL BUTTONS
+	auto connectButtonClickSound = [&](QPushButton* btn) {
+		connect(btn, &QPushButton::pressed, this, [=]() {
+			if (m_is_sound) {
+				m_player_4_click.stop();  // reset position
+				m_player_4_click.play();  // play sound
+			}
+			});
+		};
+	auto connectButtonClickSoundAlways = [&](QPushButton* btn) {
+		connect(btn, &QPushButton::pressed, this, [=]() {
+			m_player_4_click.stop();  // reset position
+			m_player_4_click.play();  // play sound
+			});
+		};
+
+	connectButtonClickSound(m_btn_level);
+	connectButtonClickSound(m_btn_restart);
+	connectButtonClickSound(m_btn_logout);
+	connectButtonClickSound(m_btn_pause_resume);
+	connectButtonClickSoundAlways(m_btn_sound);
 }
 
 void QtMiniGame::initGame()
@@ -296,7 +385,7 @@ void QtMiniGame::initGame()
 	// regenerate bombs and icons
 	setGridButtonsProperty(m_bomb_count);
 	setGameIconSize();
-	m_label_win_lose->setText("PLAY");
+	m_label_win_lose->setText("CLICK\nTO\nBEGIN");
 	this->releaseMouse();
 }
 
@@ -341,6 +430,7 @@ void QtMiniGame::onLeftClickGrid(int row, int col)
 	// Check if this button has a bomb
 	bool isBomb = m_buttons_grid[row][col]->property("isBomb").toBool();
 	if (isBomb) {
+		if (m_is_sound) m_player_3_mine.play();
 		m_label_win_lose->setText("BOOM");
 		m_btn_pause_resume->setDisabled(true);
 
@@ -348,7 +438,7 @@ void QtMiniGame::onLeftClickGrid(int row, int col)
 		m_is_playing = false;
 		disableAllGrid(true);
 
-		static QIcon blast(":/QtMiniGame/icons/icon_4_blasting.ico");
+		static QIcon blast(m_icon_4_blasting);
 		m_buttons_grid[row][col]->setIcon(blast);
 		m_buttons_grid[row][col]->setIconSize(QSize(m_icon_wid, m_icon_wid));
 		m_buttons_grid[row][col]->setStyleSheet(
@@ -358,6 +448,7 @@ void QtMiniGame::onLeftClickGrid(int row, int col)
 		revealBomb(row, col);
 	}
 	else {
+		if (m_is_sound) m_player_1_step.play();
 		bool isNumber = m_buttons_grid[row][col]->property("isNumber").toBool();
 		m_buttons_grid[row][col]->setProperty("isRevealed", true);
 		m_count_revealed_btn++;
@@ -385,12 +476,14 @@ void QtMiniGame::onLeftClickGrid(int row, int col)
 
 	m_buttons_grid[row][col]->setAttribute(Qt::WA_TransparentForMouseEvents);
 	if (m_count_revealed_btn == m_number_revealed_btn) {
-		m_label_win_lose->setText("WIN");
+		QString msg = QString("YOU WASTED %1\nOF\nYOUR LIFE").arg(m_str_time);
+		m_label_win_lose->setText(msg);
 		m_timer->stop();
 		m_is_playing = false;
 		m_is_win = true;
 		m_btn_pause_resume->setDisabled(true);
 		m_label_bombcount->setText("0");
+		m_label_clock->setText("WIN");
 		revealBomb(row, col);
 		disableAllGrid(true);
 	}
@@ -401,14 +494,13 @@ void QtMiniGame::onRightClickGrid(int row, int col)
 {
 	if (!m_is_playing)
 		return;
-	// handle flag marking logic
-	static QIcon red_flag(":/QtMiniGame/icons/icon_1_red_flag.ico");
-	static QIcon question_mark(":/QtMiniGame/icons/icon_2_question_mark.ico");
-
 
 	if (m_buttons_grid[row][col]->icon().isNull())
 	{
-		m_buttons_grid[row][col]->setIcon(red_flag);
+		if (m_is_sound)
+			m_player_2_flag.play();
+		m_player_2_flag.play();
+		m_buttons_grid[row][col]->setIcon(m_icon_1_red_flag);
 		m_buttons_grid[row][col]->setIconSize(QSize(m_icon_wid, m_icon_wid));
 		m_buttons_grid[row][col]->setProperty("isRedFlag", true);
 		int flagged = 0;
@@ -422,9 +514,10 @@ void QtMiniGame::onRightClickGrid(int row, int col)
 	}
 	else
 	{
+		if (m_is_sound) m_player_2_flag.play();
 		if (m_buttons_grid[row][col]->property("isRedFlag").toBool())
 		{
-			m_buttons_grid[row][col]->setIcon(question_mark);
+			m_buttons_grid[row][col]->setIcon(m_icon_2_question_mark);
 			m_buttons_grid[row][col]->setIconSize(QSize(m_icon_wid, m_icon_wid));
 			m_buttons_grid[row][col]->setProperty("isRedFlag", false);
 			int flagged = 0;
@@ -443,7 +536,7 @@ void QtMiniGame::onRightClickGrid(int row, int col)
 		}
 	}
 
-	
+
 }
 
 
@@ -465,8 +558,8 @@ void QtMiniGame::setGridButtonsProperty(int BombsCount)
 			number_adjacent_bombs = countAdjacentBombs(r, c);
 			if (number_adjacent_bombs > 0)
 			{
-				QString iconPath = chooseHiddenIconNumber(number_adjacent_bombs);
-				m_buttons_grid[r][c]->setProperty("hiddenIcon", QIcon(iconPath));
+				QIcon icon = chooseHiddenIconNumber(number_adjacent_bombs);
+				m_buttons_grid[r][c]->setProperty("hiddenIcon", icon);
 				m_buttons_grid[r][c]->setProperty("isNumber", true);
 			}
 		}
@@ -488,19 +581,19 @@ int QtMiniGame::countAdjacentBombs(int row, int col)
 	return count;
 }
 
-QString QtMiniGame::chooseHiddenIconNumber(int number)
+QIcon QtMiniGame::chooseHiddenIconNumber(int number)
 {
 	switch (number)
 	{
-	case 1: return ":/QtMiniGame/icons/number_1.ico";
-	case 2: return ":/QtMiniGame/icons/number_2.ico";
-	case 3: return ":/QtMiniGame/icons/number_3.ico";
-	case 4: return ":/QtMiniGame/icons/number_4.ico";
-	case 5: return ":/QtMiniGame/icons/number_5.ico";
-	case 6: return ":/QtMiniGame/icons/number_6.ico";
-	case 7: return ":/QtMiniGame/icons/number_7.ico";
-	case 8: return ":/QtMiniGame/icons/number_8.ico";
-	default: return ""; // 0 or invalid
+	case 1: return m_icon_number_1;
+	case 2: return m_icon_number_2;
+	case 3: return m_icon_number_3;
+	case 4: return m_icon_number_4;
+	case 5: return m_icon_number_5;
+	case 6: return m_icon_number_6;
+	case 7: return m_icon_number_7;
+	case 8: return m_icon_number_8;
+	default: return QIcon(); // 0 or invalid
 	}
 }
 
@@ -580,14 +673,13 @@ void QtMiniGame::expandClickedBreadthFirstSearch(QQueue<QPair<int, int>>& blank_
 
 void QtMiniGame::revealBomb(int row, int col)
 {
-	static QIcon bomb(":/QtMiniGame/icons/icon_3_mine.ico");
 	int r = 0, c = 0;
 	for (int i = 0; i < m_bomb_count; i++)
 	{
 		r = m_bombs_coords[i].first;
 		c = m_bombs_coords[i].second;
 		if (r == row && c == col) continue;
-		m_buttons_grid[r][c]->setIcon(bomb);
+		m_buttons_grid[r][c]->setIcon(m_icon_3_mine);
 		m_buttons_grid[r][c]->setIconSize(QSize(m_icon_wid, m_icon_wid));
 		if (m_buttons_grid[r][c]->property("isRedFlag").toBool() || m_is_win == true)
 			m_buttons_grid[r][c]->setStyleSheet(
