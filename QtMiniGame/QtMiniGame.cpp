@@ -35,7 +35,7 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 	// SOUNDS
 	m_player_1_step.setAudioOutput(&m_audio_1_step);
 	m_player_1_step.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_1_step.mp3"));
-	m_audio_1_step.setVolume(0.8);
+	m_audio_1_step.setVolume(1);
 
 	m_player_2_flag.setAudioOutput(&m_audio_2_flag);
 	m_player_2_flag.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_2_flag.mp3"));
@@ -43,15 +43,19 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 
 	m_player_3_mine.setAudioOutput(&m_audio_3_mine);
 	m_player_3_mine.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_3_explode.mp3"));
-	m_audio_3_mine.setVolume(0.8);
+	m_audio_3_mine.setVolume(1);
 
 	m_player_4_click.setAudioOutput(&m_audio_4_click);
 	m_player_4_click.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_4_click.mp3"));
-	m_audio_4_click.setVolume(0.8);
+	m_audio_4_click.setVolume(1);
 
 	m_player_5_win.setAudioOutput(&m_audio_5_win);
 	m_player_5_win.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_5_win.mp3"));
-	m_audio_5_win.setVolume(0.8);
+	m_audio_5_win.setVolume(1);
+
+	m_player_6_reload.setAudioOutput(&m_audio_6_reload);
+	m_player_6_reload.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_6_reload.mp3"));
+	m_audio_6_reload.setVolume(1);
 
 	// Set central widget and grid layout
 	setCentralWidgetandGridLayout();
@@ -238,15 +242,15 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 		}
 		});
 
-	m_revealTimer = new QTimer(this);
-	m_revealTimer->setInterval(m_revealIntervalMs);
-	connect(m_revealTimer, &QTimer::timeout, this, [=]() {
-		if (m_revealIndex >= m_revealList.size()) {
-			m_revealTimer->stop();
-			disableAllGrid(false);          // allow input after reveal finishes
+	m_reveal_timer = new QTimer(this);
+	m_reveal_timer->setInterval(m_reveal_iterval_ms);
+	connect(m_reveal_timer, &QTimer::timeout, this, [=]() {
+		if (m_reveal_index >= m_reveal_list.size()) {
+			m_reveal_timer->stop();
+			disableAllGrid(false);
 			return;
 		}
-		auto* b = m_revealList[m_revealIndex++];
+		auto* b = m_reveal_list[m_reveal_index++];
 		b->setVisible(true);                // show next tile
 		b->update();
 		});
@@ -260,12 +264,13 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 			m_player_4_click.play();
 			});
 		if (dlg.exec() == QDialog::Accepted) {
+
 			// get values from level dialog
 			m_rows = dlg.setSize();
 			m_cols = dlg.setSize();
 			m_bomb_count = dlg.setBombCount();
 			m_grid_size = dlg.setGridSize();
-
+			if (m_is_sound) m_player_6_reload.play();
 
 			QProgressDialog loading("Loading...", QString(), 0, m_rows * m_cols * 2, this);
 			loading.setWindowTitle("Create Game Board");
@@ -298,12 +303,15 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 			initGame();
 			loading.setValue(loading.maximum() - 1);
 			loading.close();
-			m_revealIndex = 0;
-			m_revealTimer->start();
 
+			m_reveal_index = 0;
+			m_reveal_timer->start();
 		}
 		});
-	connect(m_btn_restart, &QPushButton::clicked, this, &QtMiniGame::initGame);
+	connect(m_btn_restart, &QPushButton::clicked, this, [=] {
+		if (m_is_sound) m_player_6_reload.play();
+		initGame();
+		});
 	connect(m_btn_sound, &QPushButton::clicked, this, [=] {
 		if (m_is_sound)
 		{
@@ -336,7 +344,7 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 		};
 
 	connectButtonClickSound(m_btn_level);
-	connectButtonClickSound(m_btn_restart);
+	//connectButtonClickSound(m_btn_restart);
 	connectButtonClickSound(m_btn_logout);
 	connectButtonClickSound(m_btn_pause_resume);
 	connectButtonClickSoundAlways(m_btn_sound);
@@ -737,8 +745,8 @@ void QtMiniGame::recreateGridWithProgress(QProgressDialog* progress)
 		delete item;
 	}
 	m_buttons_grid.clear();
-	m_revealList.clear();
-	m_revealIndex = 0;
+	m_reveal_list.clear();
+	m_reveal_index = 0;
 
 	// progress range = total cells
 	const int total = m_rows * m_cols;
@@ -758,7 +766,7 @@ void QtMiniGame::recreateGridWithProgress(QProgressDialog* progress)
 			connect(btn, &QPushButtonRightClick::clickedRight, this, [=]() { onRightClickGrid(r, c); });
 
 			m_buttons_grid[r][c] = btn;
-			m_revealList.push_back(btn);                // order to reveal
+			m_reveal_list.push_back(btn);                // order to reveal
 
 			// update progress per button
 			if (progress) {

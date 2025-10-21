@@ -131,6 +131,19 @@ DialogLevel::DialogLevel(QWidget* parent)
             m_playClickSound();
         });
 
+    // SOUND
+    auto connectRadioClickSound = [&](QAbstractButton* btn) {
+        connect(btn, &QAbstractButton::pressed, this, [=]() {
+            if (m_ptr_is_sound && *m_ptr_is_sound && m_playClickSound)
+                m_playClickSound();
+            });
+        };
+
+    connectRadioClickSound(m_easy);
+    connectRadioClickSound(m_medium);
+    connectRadioClickSound(m_hard);
+    connectRadioClickSound(m_custom);
+
 }
 
 

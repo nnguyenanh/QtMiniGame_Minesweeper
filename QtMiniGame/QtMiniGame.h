@@ -71,10 +71,10 @@ private:
 
 
     // reveal sequence
-    QTimer* m_revealTimer = nullptr;
-    QVector<QPushButton*> m_revealList;
-    int m_revealIndex = 0;
-    int m_revealIntervalMs = 0; // tweak for speed
+    QTimer* m_reveal_timer = nullptr;
+    QVector<QPushButton*> m_reveal_list;
+    int m_reveal_index = 0;
+    int m_reveal_iterval_ms = 1; // tweak for speed
 
 
     // QIcon 
@@ -113,14 +113,8 @@ private:
     QMediaPlayer m_player_5_win;
     QAudioOutput m_audio_5_win;
 
-    //QSound m_sound_step;
-    //QSound m_sound_flag;
-    //QSound m_sound_mine;
-    //QSound m_sound_click;
-
-
-protected:
-    //void showEvent(QShowEvent* e) override;
+    QMediaPlayer m_player_6_reload;
+    QAudioOutput m_audio_6_reload;
 
 
 public:
@@ -150,6 +144,11 @@ private slots:
     void onLeftClickGrid(int row, int col);
     void onRightClickGrid(int row, int col);
     void initGame();
+
+
+signals:
+    void revealFinished();
+
 
 };
 
