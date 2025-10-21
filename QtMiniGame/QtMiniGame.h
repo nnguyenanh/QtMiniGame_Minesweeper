@@ -110,6 +110,9 @@ private:
     QMediaPlayer m_player_4_click;
     QAudioOutput m_audio_4_click;
 
+    QMediaPlayer m_player_5_win;
+    QAudioOutput m_audio_5_win;
+
     //QSound m_sound_step;
     //QSound m_sound_flag;
     //QSound m_sound_mine;

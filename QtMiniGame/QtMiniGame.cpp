@@ -39,7 +39,7 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 
 	m_player_2_flag.setAudioOutput(&m_audio_2_flag);
 	m_player_2_flag.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_2_flag.mp3"));
-	m_audio_2_flag.setVolume(0.8);
+	m_audio_2_flag.setVolume(1);
 
 	m_player_3_mine.setAudioOutput(&m_audio_3_mine);
 	m_player_3_mine.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_3_explode.mp3"));
@@ -49,7 +49,9 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 	m_player_4_click.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_4_click.mp3"));
 	m_audio_4_click.setVolume(0.8);
 
-
+	m_player_5_win.setAudioOutput(&m_audio_5_win);
+	m_player_5_win.setSource(QUrl("qrc:/QtMiniGame/sounds/sound_5_win.mp3"));
+	m_audio_5_win.setVolume(0.8);
 
 	// Set central widget and grid layout
 	setCentralWidgetandGridLayout();
@@ -475,6 +477,7 @@ void QtMiniGame::onLeftClickGrid(int row, int col)
 
 	m_buttons_grid[row][col]->setAttribute(Qt::WA_TransparentForMouseEvents);
 	if (m_count_revealed_btn == m_number_revealed_btn) {
+		if (m_is_sound) m_player_5_win.play();
 		QString msg = QString("YOU WASTED %1\nOF\nYOUR LIFE").arg(m_str_time);
 		m_label_win_lose->setText(msg);
 		m_timer->stop();
@@ -778,4 +781,3 @@ void QtMiniGame::recreateGridWithProgress(QProgressDialog* progress)
 QtMiniGame::~QtMiniGame()
 {
 }
-

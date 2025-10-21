@@ -21,5 +21,6 @@
 		<file>sounds/sound_2_flag.mp3</file>
 		<file>sounds/sound_3_explode.mp3</file>
 		<file>sounds/sound_4_click.mp3</file>
+		<file>sounds/sound_5_win.mp3</file>
     </qresource>
 </RCC>

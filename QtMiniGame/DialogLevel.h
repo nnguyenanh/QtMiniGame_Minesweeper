@@ -1,7 +1,6 @@
 #pragma once
 #include <QDialog>
 #include <QMessageBox>
-#include "QPushButtonStyled.h"
 
 namespace Ui {
     class DialogLevel;
