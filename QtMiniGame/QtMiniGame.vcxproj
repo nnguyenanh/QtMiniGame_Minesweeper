@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>Qt 6.9.3 MSVC2022 64-bit</QtInstall>
-    <QtModules>core;gui;widgets;multimedia</QtModules>
+    <QtModules>core;gui;widgets;multimedia;sql</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>Qt 6.9.3 MSVC2022 64-bit</QtInstall>
-    <QtModules>core;gui;widgets;multimedia</QtModules>
+    <QtModules>core;gui;widgets;multimedia;sql</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -112,14 +112,17 @@
   <ItemGroup>
     <QtRcc Include="QtMiniGame.qrc" />
     <QtUic Include="DialogLevel.ui" />
+    <QtUic Include="DialogSignIn.ui" />
     <QtUic Include="QtMiniGame.ui" />
     <QtMoc Include="QtMiniGame.h" />
     <ClCompile Include="DialogLevel.cpp" />
+    <ClCompile Include="DialogSignIn.cpp" />
     <ClCompile Include="QPushButtonRightClick.cpp" />
     <ClCompile Include="QtMiniGame.cpp" />
     <ClCompile Include="main.cpp" />
     <QtMoc Include="QPushButtonRightClick.h" />
     <QtMoc Include="DialogLevel.h" />
+    <QtMoc Include="DialogSignIn.h" />
     <ClInclude Include="stdafx.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">Create</PrecompiledHeader>

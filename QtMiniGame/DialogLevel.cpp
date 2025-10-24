@@ -15,7 +15,7 @@ DialogLevel::DialogLevel(QWidget* parent)
     //connect(ui->okButton, &QPushButton::clicked, this, &DialogLevel::accept);
 
     // Style Apply
-    ui->okButton->setFixedSize(100, 30);
+    ui->okButton->setFixedSize(110, 50);
     ui->okButton->setText("Apply");
 
 
@@ -48,7 +48,6 @@ DialogLevel::DialogLevel(QWidget* parent)
     // LAYOUT
     QVBoxLayout* layout_emh = new QVBoxLayout();
     layout_emh->setAlignment(Qt::AlignCenter | Qt::AlignTop);
-    layout_emh->setContentsMargins(0, 20, 0, 0);
     layout_emh->setSpacing(5);
     layout_emh->addWidget(m_easy);
     layout_emh->addWidget(m_medium);
@@ -101,19 +100,21 @@ DialogLevel::DialogLevel(QWidget* parent)
     layout_main->addStretch();                // push buttons to the bottom
     layout_main->addLayout(layout_button);
 
+    layout_main->setContentsMargins(0, 20, 0, 22);
+
     setLayout(layout_main);
 
-    // Initially disable text boxes
+    // disable input at first
     m_edit_size->setEnabled(false);
     m_edit_bombcount->setEnabled(false);
 
-    // When CUSTOM is selected, enable inputs
+    // if CUSTOM selected -> enable inputs
     connect(m_custom, &QRadioButton::toggled, this, [=]() {
         m_edit_size->setEnabled(true);
         m_edit_bombcount->setEnabled(true);
         });
 
-    // When other radio buttons are selected, disable inputs
+    // if other radio buttons selected disable inputs
     connect(m_easy, &QRadioButton::toggled, this, [=]() {
         m_edit_size->setEnabled(false);
         m_edit_bombcount->setEnabled(false);
@@ -143,7 +144,6 @@ DialogLevel::DialogLevel(QWidget* parent)
     connectRadioClickSound(m_medium);
     connectRadioClickSound(m_hard);
     connectRadioClickSound(m_custom);
-
 }
 
 

@@ -6,6 +6,7 @@
 #include "ui_QtMiniGame.h"
 #include "QPushButtonRightClick.h"
 #include "DialogLevel.h"
+#include "DialogSignIn.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
@@ -120,7 +121,12 @@ private:
 public:
     void setCentralWidgetandGridLayout();
     void setButtonGridLayout();
+    void initGame();
+
     void setGameIconSize();
+
+    void onLeftClickGrid(int row, int col);
+    void onRightClickGrid(int row, int col);
 
     void setGridButtonsProperty(int BombsCount);
     int countAdjacentBombs(int row, int col);
@@ -139,16 +145,12 @@ public:
     void revealBomb(int row, int col);
     void recreateGridWithProgress(QProgressDialog* progress);
 
-//private slots:
-private slots:
-    void onLeftClickGrid(int row, int col);
-    void onRightClickGrid(int row, int col);
-    void initGame();
-
+    QPushButton* logoutButton() const { return m_btn_logout; }
+    QMediaPlayer* clickPlayer() { return &m_player_4_click; }
+    bool isSound() { return m_is_sound; }
 
 signals:
-    void revealFinished();
-
+    void requestLogout();
 
 };
 

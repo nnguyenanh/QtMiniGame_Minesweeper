@@ -64,152 +64,7 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 	qApp->processEvents();
 	setFixGridButtonsSize();
 	setGameIconSize();
-	initGame();
 
-}
-
-// SET WIDGET LAYOUT
-void QtMiniGame::setCentralWidgetandGridLayout()
-{
-	m_central = new QWidget(this);
-
-	// === GRID ===
-	m_layout_grid = new QGridLayout();
-	m_layout_grid->setSpacing(0);
-
-	QWidget* container_grid = new QWidget();
-	container_grid->setLayout(m_layout_grid);
-	container_grid->setFixedSize(m_grid_size, m_grid_size);
-
-	QWidget* gridHolder = new QWidget();
-	QVBoxLayout* gridLayout = new QVBoxLayout(gridHolder);
-	gridLayout->addStretch();
-	gridLayout->addWidget(container_grid, 0, Qt::AlignCenter);
-	gridLayout->addStretch();
-
-	// === BUTTONS ===
-	m_btn_pause_resume = new QPushButton(this);
-	m_btn_pause_resume->setFixedSize(50, 50);
-	m_btn_pause_resume->setIcon(m_icon_5_pause);
-	m_btn_pause_resume->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
-	m_btn_pause_resume->setDisabled(true);
-	m_btn_sound = new QPushButton(this);
-	m_btn_sound->setFixedSize(50, 50);
-	m_btn_sound->setIcon(m_icon_7_sound_off);
-	m_btn_sound->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
-	m_btn_level = new QPushButton("Level", this);
-	m_btn_level->setFixedSize(110, 50);
-	m_btn_restart = new QPushButton("Restart", this);
-	m_btn_restart->setFixedSize(110, 50);
-	m_btn_logout = new QPushButton("Sign Out", this);
-	m_btn_logout->setFixedSize(110, 50);
-
-	// WIN screen 
-	m_label_win_lose = new QLabel(this);
-	m_label_win_lose->setFixedSize(110, 180);
-	m_label_win_lose->setAlignment(Qt::AlignCenter);
-	m_label_win_lose->setTextFormat(Qt::PlainText);
-	m_label_win_lose->setWordWrap(true);
-	m_label_win_lose->setText("PLAY");  // default text
-	m_label_win_lose->setStyleSheet(
-		"QLabel {"
-		" background-color: black;"
-		" color: red;"
-		" border: 2px solid grey;"
-		" border-radius: 5px;"
-		" font: bold 20px 'Courier New';"
-		"}"
-	);
-
-	// bomb screen 
-	m_label_bombcount = new QLabel(this);
-	m_label_bombcount->setFixedSize(110, 50);
-	m_label_bombcount->setAlignment(Qt::AlignCenter);
-	m_label_bombcount->setText("0");  // default text
-	m_label_bombcount->setStyleSheet(
-		"QLabel {"
-		" background-color: black;"
-		" color: red;"
-		" border: 2px solid grey;"
-		" border-radius: 5px;"
-		" font: bold 20px 'Courier New';"
-		"}"
-	);
-
-	// clock screen
-	m_label_clock = new QLabel(this);
-	m_label_clock->setFixedSize(110, 50);
-	m_label_clock->setAlignment(Qt::AlignCenter);
-	m_label_clock->setText("00:00");  // default text
-	m_label_clock->setStyleSheet(
-		"QLabel {"
-		" background-color: black;"
-		" color: red;"
-		" border: 2px solid grey;"
-		" border-radius: 5px;"
-		" font: bold 20px 'Courier New';"
-		"}"
-	);
-
-
-	QHBoxLayout* layout_pause_sound = new QHBoxLayout();
-	layout_pause_sound->addStretch();
-	layout_pause_sound->addWidget(m_btn_pause_resume);
-	layout_pause_sound->addSpacing(4);
-	layout_pause_sound->addWidget(m_btn_sound);
-	layout_pause_sound->addStretch();
-
-
-	QVBoxLayout* layout_control_panel = new QVBoxLayout();
-	//layout_control_panel->addStretch();
-	layout_control_panel->addSpacing(20);
-	layout_control_panel->addWidget(m_label_win_lose, 0, Qt::AlignHCenter);
-	layout_control_panel->addSpacing(20);
-	layout_control_panel->addWidget(m_label_bombcount, 0, Qt::AlignHCenter);
-	layout_control_panel->addSpacing(20);
-	layout_control_panel->addWidget(m_label_clock, 0, Qt::AlignHCenter);
-	layout_control_panel->addLayout(layout_pause_sound);
-	layout_control_panel->addSpacing(20);
-	layout_control_panel->addWidget(m_btn_level, 0, Qt::AlignHCenter);
-	layout_control_panel->addWidget(m_btn_restart, 0, Qt::AlignHCenter);
-	layout_control_panel->addStretch();
-	layout_control_panel->addWidget(m_btn_logout, 0, Qt::AlignHCenter);
-
-	QWidget* container_buttons = new QWidget();
-	container_buttons->setLayout(layout_control_panel);
-
-
-	// SPLITTER
-	m_split_screen = new QSplitter(Qt::Horizontal, m_central);
-	m_split_screen->addWidget(gridHolder);
-	m_split_screen->addWidget(container_buttons);/*
-	m_split_screen->setStretchFactor(0, 1);
-	m_split_screen->setStretchFactor(1, 1);*/
-	//m_split_screen->setSizes({ 550, 200 });
-
-	m_split_screen->setHandleWidth(2);
-	m_split_screen->setStyleSheet(
-		"QSplitter::handle {"
-		"  background-color: #696969;"
-		"  border: none;"
-		"}"
-	);
-
-	QSplitterHandle* handle = m_split_screen->handle(1);
-	if (handle)
-	{
-		handle->setEnabled(false);
-		handle->setCursor(Qt::ArrowCursor);
-	}
-
-	// CENTRAL
-	QVBoxLayout* wrapperLayout = new QVBoxLayout(m_central);
-	wrapperLayout->addWidget(m_split_screen);
-	m_central->setLayout(wrapperLayout);
-
-	setCentralWidget(m_central);
-	//setMinimumSize(900, 720);
-	setFixedSize(900, 720);
 
 	m_timer = new QTimer(this);
 	connect(m_timer, &QTimer::timeout, this, [=]() {
@@ -345,9 +200,161 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 
 	connectButtonClickSound(m_btn_level);
 	//connectButtonClickSound(m_btn_restart);
-	connectButtonClickSound(m_btn_logout);
+	//connectButtonClickSound(m_btn_logout);
 	connectButtonClickSound(m_btn_pause_resume);
 	connectButtonClickSoundAlways(m_btn_sound);
+
+	connect(m_btn_logout, &QPushButton::pressed, this, [=] {
+		emit requestLogout();
+		close();
+		});
+
+	initGame();
+}
+
+// SET WIDGET LAYOUT
+void QtMiniGame::setCentralWidgetandGridLayout()
+{
+	m_central = new QWidget(this);
+
+	// === GRID ===
+	m_layout_grid = new QGridLayout();
+	m_layout_grid->setSpacing(0);
+
+	QWidget* container_grid = new QWidget();
+	container_grid->setLayout(m_layout_grid);
+	container_grid->setFixedSize(m_grid_size, m_grid_size);
+
+	QWidget* gridHolder = new QWidget();
+	QVBoxLayout* gridLayout = new QVBoxLayout(gridHolder);
+	gridLayout->addStretch();
+	gridLayout->addWidget(container_grid, 0, Qt::AlignCenter);
+	gridLayout->addStretch();
+
+	// === BUTTONS ===
+	m_btn_pause_resume = new QPushButton(this);
+	m_btn_pause_resume->setFixedSize(50, 50);
+	m_btn_pause_resume->setIcon(m_icon_5_pause);
+	m_btn_pause_resume->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
+	m_btn_pause_resume->setDisabled(true);
+	m_btn_sound = new QPushButton(this);
+	m_btn_sound->setFixedSize(50, 50);
+	m_btn_sound->setIcon(m_icon_7_sound_off);
+	m_btn_sound->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
+	m_btn_level = new QPushButton("Level", this);
+	m_btn_level->setFixedSize(110, 50);
+	m_btn_restart = new QPushButton("Restart", this);
+	m_btn_restart->setFixedSize(110, 50);
+	m_btn_logout = new QPushButton("Log Out", this);
+	m_btn_logout->setFixedSize(110, 50);
+
+	// WIN screen 
+	m_label_win_lose = new QLabel(this);
+	m_label_win_lose->setFixedSize(110, 180);
+	m_label_win_lose->setAlignment(Qt::AlignCenter);
+	m_label_win_lose->setTextFormat(Qt::PlainText);
+	m_label_win_lose->setWordWrap(true);
+	m_label_win_lose->setText("PLAY");  // default text
+	m_label_win_lose->setStyleSheet(
+		"QLabel {"
+		" background-color: black;"
+		" color: red;"
+		" border: 2px solid grey;"
+		" border-radius: 5px;"
+		" font: bold 20px 'Courier New';"
+		"}"
+	);
+
+	// bomb screen 
+	m_label_bombcount = new QLabel(this);
+	m_label_bombcount->setFixedSize(110, 50);
+	m_label_bombcount->setAlignment(Qt::AlignCenter);
+	m_label_bombcount->setText("0");  // default text
+	m_label_bombcount->setStyleSheet(
+		"QLabel {"
+		" background-color: black;"
+		" color: red;"
+		" border: 2px solid grey;"
+		" border-radius: 5px;"
+		" font: bold 20px 'Courier New';"
+		"}"
+	);
+
+	// clock screen
+	m_label_clock = new QLabel(this);
+	m_label_clock->setFixedSize(110, 50);
+	m_label_clock->setAlignment(Qt::AlignCenter);
+	m_label_clock->setText("00:00");  // default text
+	m_label_clock->setStyleSheet(
+		"QLabel {"
+		" background-color: black;"
+		" color: red;"
+		" border: 2px solid grey;"
+		" border-radius: 5px;"
+		" font: bold 20px 'Courier New';"
+		"}"
+	);
+
+
+	QHBoxLayout* layout_pause_sound = new QHBoxLayout();
+	layout_pause_sound->addStretch();
+	layout_pause_sound->addWidget(m_btn_pause_resume);
+	layout_pause_sound->addSpacing(4);
+	layout_pause_sound->addWidget(m_btn_sound);
+	layout_pause_sound->addStretch();
+
+
+	QVBoxLayout* layout_control_panel = new QVBoxLayout();
+	//layout_control_panel->addStretch();
+	layout_control_panel->addSpacing(20);
+	layout_control_panel->addWidget(m_label_win_lose, 0, Qt::AlignHCenter);
+	layout_control_panel->addSpacing(20);
+	layout_control_panel->addWidget(m_label_bombcount, 0, Qt::AlignHCenter);
+	layout_control_panel->addSpacing(20);
+	layout_control_panel->addWidget(m_label_clock, 0, Qt::AlignHCenter);
+	layout_control_panel->addLayout(layout_pause_sound);
+	layout_control_panel->addSpacing(20);
+	layout_control_panel->addWidget(m_btn_level, 0, Qt::AlignHCenter);
+	layout_control_panel->addWidget(m_btn_restart, 0, Qt::AlignHCenter);
+	layout_control_panel->addStretch();
+	layout_control_panel->addWidget(m_btn_logout, 0, Qt::AlignHCenter);
+
+	QWidget* container_buttons = new QWidget();
+	container_buttons->setLayout(layout_control_panel);
+
+
+	// SPLITTER
+	m_split_screen = new QSplitter(Qt::Horizontal, m_central);
+	m_split_screen->addWidget(gridHolder);
+	m_split_screen->addWidget(container_buttons);/*
+	m_split_screen->setStretchFactor(0, 1);
+	m_split_screen->setStretchFactor(1, 1);*/
+	//m_split_screen->setSizes({ 550, 200 });
+
+	m_split_screen->setHandleWidth(2);
+	m_split_screen->setStyleSheet(
+		"QSplitter::handle {"
+		"  background-color: #696969;"
+		"  border: none;"
+		"}"
+	);
+
+	QSplitterHandle* handle = m_split_screen->handle(1);
+	if (handle)
+	{
+		handle->setEnabled(false);
+		handle->setCursor(Qt::ArrowCursor);
+	}
+
+	// CENTRAL
+	QVBoxLayout* wrapperLayout = new QVBoxLayout(m_central);
+	wrapperLayout->addWidget(m_split_screen);
+	m_central->setLayout(wrapperLayout);
+
+	setCentralWidget(m_central);
+	//setMinimumSize(900, 720);
+	setFixedSize(900, 720);
+
 }
 
 void QtMiniGame::initGame()

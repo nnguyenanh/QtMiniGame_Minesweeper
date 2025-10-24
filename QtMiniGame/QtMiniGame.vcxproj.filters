@@ -38,6 +38,9 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <QtUic Include="DialogSignIn.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -49,12 +52,18 @@
     <ClCompile Include="DialogLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DialogSignIn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QPushButtonRightClick.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="DialogLevel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DialogSignIn.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
