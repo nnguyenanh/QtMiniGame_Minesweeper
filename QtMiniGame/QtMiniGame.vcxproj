@@ -68,8 +68,23 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\MySQL\mysql-connector-c++-9.5.0-winx64\include\mysql;D:\MySQL\mysql-connector-c++-9.5.0-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link />
+    <Link>
+      <AdditionalLibraryDirectories>D:\MySQL\mysql-connector-c++-9.5.0-winx64\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\MySQL\mysql-connector-c++-9.5.0-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>D:\MySQL\mysql-connector-c++-9.5.0-winx64\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -110,12 +125,16 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <QtMoc Include="DialogAccount.h" />
+    <ClInclude Include="UserLogInData.h" />
     <QtRcc Include="QtMiniGame.qrc" />
     <QtUic Include="DialogLevel.ui" />
+    <QtUic Include="DialogAccount.ui" />
     <QtUic Include="DialogSignIn.ui" />
     <QtUic Include="QtMiniGame.ui" />
     <QtMoc Include="QtMiniGame.h" />
     <ClCompile Include="DialogLevel.cpp" />
+    <ClCompile Include="DialogAccount.cpp" />
     <ClCompile Include="DialogSignIn.cpp" />
     <ClCompile Include="QPushButtonRightClick.cpp" />
     <ClCompile Include="QtMiniGame.cpp" />

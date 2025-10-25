@@ -200,13 +200,30 @@ QtMiniGame::QtMiniGame(QWidget* parent)
 
 	connectButtonClickSound(m_btn_level);
 	//connectButtonClickSound(m_btn_restart);
-	//connectButtonClickSound(m_btn_logout);
+	//connectButtonClickSound(m_btn_account_setting);
 	connectButtonClickSound(m_btn_pause_resume);
 	connectButtonClickSoundAlways(m_btn_sound);
 
-	connect(m_btn_logout, &QPushButton::pressed, this, [=] {
-		emit requestLogout();
-		close();
+	connect(m_btn_account_setting, &QPushButton::pressed, this, [=] {
+		DialogAccount account;
+		account.setUserLogInData(m_user_data);
+		account.updateUserUsernameOnScreen();
+		account.updateUserRoleOnScreen();
+		connect(&account, &DialogAccount::requestLogout, this, [=]() {
+			emit requestLogout();   // forward the logout signal to main.cpp
+			close();                // close the game window
+			});
+		connect(&account, &DialogAccount::applyClicked,
+			this, &QtMiniGame::updateUserLogInData);
+		if (m_is_sound)
+		{
+			account.setSoundControl(&m_is_sound, [=]() {
+				m_player_4_click.stop();
+				m_player_4_click.play();
+				});
+			m_player_4_click.play();
+		}
+		account.exec();
 		});
 
 	initGame();
@@ -239,14 +256,14 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 	m_btn_pause_resume->setDisabled(true);
 	m_btn_sound = new QPushButton(this);
 	m_btn_sound->setFixedSize(50, 50);
-	m_btn_sound->setIcon(m_icon_7_sound_off);
+	m_btn_sound->setIcon(m_icon_7_sound_on);
 	m_btn_sound->setIconSize(QSize(m_icon_pause_sound_wid, m_icon_pause_sound_wid));
-	m_btn_level = new QPushButton("Level", this);
+	m_btn_level = new QPushButton("LEVEL", this);
 	m_btn_level->setFixedSize(110, 50);
-	m_btn_restart = new QPushButton("Restart", this);
+	m_btn_restart = new QPushButton("RESTART", this);
 	m_btn_restart->setFixedSize(110, 50);
-	m_btn_logout = new QPushButton("Log Out", this);
-	m_btn_logout->setFixedSize(110, 50);
+	m_btn_account_setting = new QPushButton("ACCOUNT", this);
+	m_btn_account_setting->setFixedSize(110, 50);
 
 	// WIN screen 
 	m_label_win_lose = new QLabel(this);
@@ -313,11 +330,11 @@ void QtMiniGame::setCentralWidgetandGridLayout()
 	layout_control_panel->addSpacing(20);
 	layout_control_panel->addWidget(m_label_clock, 0, Qt::AlignHCenter);
 	layout_control_panel->addLayout(layout_pause_sound);
-	layout_control_panel->addSpacing(20);
 	layout_control_panel->addWidget(m_btn_level, 0, Qt::AlignHCenter);
 	layout_control_panel->addWidget(m_btn_restart, 0, Qt::AlignHCenter);
 	layout_control_panel->addStretch();
-	layout_control_panel->addWidget(m_btn_logout, 0, Qt::AlignHCenter);
+	layout_control_panel->addWidget(m_btn_account_setting, 0, Qt::AlignHCenter);
+	//layout_control_panel->addWidget(m_btn_account_setting, 0, Qt::AlignHCenter);
 
 	QWidget* container_buttons = new QWidget();
 	container_buttons->setLayout(layout_control_panel);
@@ -792,6 +809,12 @@ void QtMiniGame::recreateGridWithProgress(QProgressDialog* progress)
 
 	// progress dialog closes in caller; we start reveal afterward
 }
+
+void QtMiniGame::updateUserLogInData(const UserLogInData& updated)
+{
+	m_user_data = updated;      
+}
+
 
 QtMiniGame::~QtMiniGame()
 {

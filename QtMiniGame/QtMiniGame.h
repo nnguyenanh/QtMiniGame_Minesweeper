@@ -6,9 +6,16 @@
 #include "ui_QtMiniGame.h"
 #include "QPushButtonRightClick.h"
 #include "DialogLevel.h"
-#include "DialogSignIn.h"
+#include "DialogAccount.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
+
+#include <QSQLDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+
+#include "UserLogInData.h"
+//#include <algorithm>
 
 
 class QtMiniGame : public QMainWindow
@@ -47,7 +54,7 @@ private:
     QPushButton* m_btn_sound = nullptr;
     QPushButton* m_btn_level = nullptr;
     QPushButton* m_btn_restart = nullptr;
-    QPushButton* m_btn_logout = nullptr;
+    QPushButton* m_btn_account_setting = nullptr;
     
     
     
@@ -66,7 +73,7 @@ private:
     int m_count_revealed_btn = 0;
     bool m_is_win = false;
     bool m_is_playing = false;
-    bool m_is_sound = false;
+    bool m_is_sound = true;
     qint64 m_paused_ms = 15;
     QString m_str_time = "00:00";
 
@@ -76,7 +83,6 @@ private:
     QVector<QPushButton*> m_reveal_list;
     int m_reveal_index = 0;
     int m_reveal_iterval_ms = 1; // tweak for speed
-
 
     // QIcon 
     QIcon m_icon_1_red_flag;
@@ -117,6 +123,17 @@ private:
     QMediaPlayer m_player_6_reload;
     QAudioOutput m_audio_6_reload;
 
+    QSqlDatabase m_database_connection;
+    bool m_is_connect_database = false;
+    QString username;
+    QString password;
+
+    UserLogInData m_user_data;
+
+public:
+    void setUserLoginData(UserLogInData data) { 
+        m_user_data = data; 
+    }
 
 public:
     void setCentralWidgetandGridLayout();
@@ -145,12 +162,25 @@ public:
     void revealBomb(int row, int col);
     void recreateGridWithProgress(QProgressDialog* progress);
 
-    QPushButton* logoutButton() const { return m_btn_logout; }
+    //QPushButton* logoutButton() const { return m_btn_logout; }
     QMediaPlayer* clickPlayer() { return &m_player_4_click; }
     bool isSound() { return m_is_sound; }
 
+    void setDatabaseConnection(QSqlDatabase connection) { m_database_connection = connection; }
+    void setIsConnectDatabase(bool is_connect) { m_is_connect_database = is_connect; }
+
+protected:
+    void closeEvent(QCloseEvent* e) override { 
+        QMainWindow::closeEvent(e);
+        QApplication::quit();
+    }
+
+
 signals:
     void requestLogout();
+
+private slots:
+    void updateUserLogInData(const UserLogInData& updated);
 
 };
 

@@ -37,5 +37,12 @@ public:
     int setGridSize() const;
     void setSoundControl(bool* soundFlag, std::function<void()> playClick);
 
-
+    QFrame* makeLine(QWidget* parent = nullptr) {
+        QFrame* line = new QFrame(parent);
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Plain);
+        line->setLineWidth(3);
+        line->setStyleSheet("color: #696969;");
+        return line;
+    }
 };

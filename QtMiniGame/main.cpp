@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "QtMiniGame.h"
 #include "DialogSignIn.h"
+#include "DialogAccount.h"
 #include <QtWidgets/QApplication>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QSQLDatabase>
 
 int main(int argc, char* argv[])
 {
@@ -18,15 +20,22 @@ int main(int argc, char* argv[])
 
 	while (true)
 	{
+		UserLogInData user_data;
 		{
 			DialogSignIn sign_in;
 			if (sign_in.exec() != QDialog::Accepted)
 				break;
 			player_click.play();
+			if (sign_in.getIsConnectedDatabase())
+			{
+				user_data = sign_in.getUserLoginData();
+			}
+
 			sign_in.close();
 		}
 		{
 			QtMiniGame game;
+			game.setUserLoginData(user_data);
 			game.show();
 
 			QObject::connect(&game, &QtMiniGame::requestLogout, [&]() {
@@ -37,16 +46,25 @@ int main(int argc, char* argv[])
 
 			int code = app.exec();
 
-			if (code == 0)
-			{
-				break;
-			}
-			else if (code == 9999)
+			if (code == 9999)
 			{
 				continue;
 			}
+			else
+			{
+				break;
+			}
 		}
 	}
+
+
+	//QtMiniGame game;
+	//game.show();
+	//app.exec();
+	//DialogAccount setting;
+	//setting.show();
+
+	//app.exec();
 
 	return 0;
 }

@@ -10,7 +10,7 @@ DialogLevel::DialogLevel(QWidget* parent)
     setWindowIcon(QIcon(":/QtMiniGame/icons/icon_8_level.ico"));
     setFont(QFont("Courier New", 11, QFont::Bold));
     setWindowTitle("Level");
-    setFixedSize(320, 350);
+    setFixedSize(320, 380);
 
     //connect(ui->okButton, &QPushButton::clicked, this, &DialogLevel::accept);
 
@@ -47,8 +47,8 @@ DialogLevel::DialogLevel(QWidget* parent)
 
     // LAYOUT
     QVBoxLayout* layout_emh = new QVBoxLayout();
-    layout_emh->setAlignment(Qt::AlignCenter | Qt::AlignTop);
-    layout_emh->setSpacing(5);
+    layout_emh->setAlignment(Qt::AlignCenter | Qt::AlignBottom);
+    //layout_emh->setSpacing(5);
     layout_emh->addWidget(m_easy);
     layout_emh->addWidget(m_medium);
     layout_emh->addWidget(m_hard);
@@ -56,7 +56,7 @@ DialogLevel::DialogLevel(QWidget* parent)
     QVBoxLayout* layout_cus = new QVBoxLayout();
     QVBoxLayout* layout_c = new QVBoxLayout();
     layout_c->setAlignment(Qt::AlignCenter | Qt::AlignTop);
-    layout_c->setContentsMargins(0, 20, 0, 0);
+    layout_c->setContentsMargins(0, 0, 0, 15);
     layout_c->addWidget(m_custom);
 
     layout_cus->addLayout(layout_c);
@@ -96,11 +96,20 @@ DialogLevel::DialogLevel(QWidget* parent)
 
     QVBoxLayout* layout_main = new QVBoxLayout();
     layout_main->addLayout(layout_emh);
-    layout_main->addLayout(layout_cus_center);
-    layout_main->addStretch();                // push buttons to the bottom
-    layout_main->addLayout(layout_button);
+    layout_main->addSpacing(10);     
+    layout_main->addWidget(makeLine());
+    layout_main->addSpacing(10);   
 
-    layout_main->setContentsMargins(0, 20, 0, 22);
+    layout_main->addLayout(layout_cus_center);
+    layout_main->addSpacing(10);      
+    layout_main->addWidget(makeLine());
+    layout_main->addSpacing(10);  
+
+    layout_main->addLayout(layout_button);
+    //layout_main->setSpacing(5);      
+    layout_main->setContentsMargins(20, 0, 20, 20);
+
+
 
     setLayout(layout_main);
 

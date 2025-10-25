@@ -1,0 +1,22 @@
+<UI version="4.0" >
+ <class>DialogAccountClass</class>
+ <widget class="QDialog" name="DialogAccountClass" >
+  <property name="objectName" >
+   <string notr="true">DialogAccountClass</string>
+  </property>
+  <property name="geometry" >
+   <rect>
+	<x>0</x>
+	<y>0</y>
+	<width>600</width>
+	<height>400</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>DialogAccount</string>
+  </property>$centralwidget$
+ </widget>
+ <layoutDefault spacing="6" margin="11" />
+ <pixmapfunction></pixmapfunction>
+ <connections/>
+</UI>
