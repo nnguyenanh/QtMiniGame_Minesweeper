@@ -36,14 +36,14 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>Qt 6.9.3 MSVC2022 64-bit</QtInstall>
+    <QtInstall>Qt 6.10.0 MSVC2022 64-bit</QtInstall>
     <QtModules>core;gui;widgets;multimedia;sql</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets;multimedia;sql</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
-    <QtInstall>Qt 6.9.3 Static MT 64-bit</QtInstall>
+    <QtInstall>Qt 6.10.0 MSVC2022 64-bit (Static MT)</QtInstall>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -81,7 +81,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>D:\MySQL\mysql-connector-c++-9.5.0-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\MySQL\mysql-connector-c++-9.5.0-winx64\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
